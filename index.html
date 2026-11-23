@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Краш-тест решения — Андрей Хард</title>
+<meta name="description" content="Проверь большое решение до удара: уволиться, открыть дело, вложить деньги, уехать. Цена ошибки в рублях, запас хода и план проверки на 14 дней. Методика Андрея Харда.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F2F2EF">
+<meta property="og:title" content="Краш-тест решения">
+<meta property="og:description" content="Цена ошибки в рублях до того, как ты её заплатишь. Методика Андрея Харда.">
+<meta property="og:image" content="img/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23FFD21F' stroke='%230E0E0F' stroke-width='2'/%3E%3Cpath d='M16 16V1a15 15 0 0 1 15 15zM16 16v15A15 15 0 0 1 1 16z' fill='%230E0E0F'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/DaysOne-400-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/sheet.css">
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    if (q.get('motion') === '1') localStorage.setItem('kt-motion', '1');
+    if (q.get('motion') === '0') localStorage.removeItem('kt-motion');
+    var forced = localStorage.getItem('kt-motion') === '1';
+    if (forced || !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+  })();
+</script>
+</head>
+<body>
+<a class="sr" href="#express">К бесплатному экспресс-тесту</a>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Краш-тест, наверх"><span class="mark"></span>Краш-тест</a>
+    <a class="btn btn-main js-buy" href="#pricing">Пройти за <span data-cfg="price">990 ₽</span></a>
+  </div>
+</header>
+
+<main>
+<!-- ============ Герой ============ -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <h1 class="rise"><span>Краш</span><span class="l2">тест</span></h1>
+        <p class="sub rise">Проверь большое решение до удара</p>
+        <p class="lead rise">Уволиться, открыть дело, вложить деньги, уехать. За 25 минут узнаешь цену ошибки в рублях, запас хода в месяцах и получишь план проверки на 14 дней. Методика Андрея Харда: 12 лет в бизнесе и семь настоящих аварий за плечами.</p>
+        <div class="ctas rise">
+          <a class="btn btn-main js-buy" href="#pricing">Пройти краш-тест <span class="price" data-cfg="price">990 ₽</span></a>
+          <a class="btn btn-ghost" href="#express">Экспресс-тест бесплатно</a>
+        </div>
+      </div>
+      <figure class="subject rise" aria-label="Андрей Хард">
+        <img src="img/andrey-hero.jpg" alt="Андрей Хард смотрит в камеру" width="720" height="1012" fetchpriority="high">
+        <span class="cross" aria-hidden="true"></span>
+        <span class="mark m1" aria-hidden="true"></span><span class="mark m2" aria-hidden="true"></span>
+        <span class="mark m3" aria-hidden="true"></span><span class="mark m4" aria-hidden="true"></span>
+        <figcaption class="ruler mono"><span>Испытатель: Андрей Хард</span><span>@hard_andrei</span></figcaption>
+      </figure>
+    </div>
+    <div class="telemetry rise">
+      <div><b>25 мин</b><span>на весь тест</span></div>
+      <div><b>6 типов</b><span>больших решений</span></div>
+      <div><b>14 дней</b><span>тест-заезд без сожжённых мостов</span></div>
+      <div><b>0</b><span>созвонов, вебинаров и дожимов</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Разгон и удар ============ -->
+<section class="crash" id="crash" aria-label="Что бывает, если прыгнуть без проверки">
+  <div class="stage" id="stage">
+    <div class="head wrap"><h2>Большие решения проверяют на&nbsp;себе. Это дорого</h2></div>
+    <div class="track" aria-hidden="true">
+      <div class="floor"></div>
+      <div class="wall"></div>
+      <div class="shards" id="shards"></div>
+      <div class="car" id="car">
+        <div class="speedlines"></div>
+        <div class="body">
+          <div class="row"><span class="mark"></span><span class="mono" style="color:#B4B8BD">объект испытания</span></div>
+          <div class="label" id="carLabel">Уволюсь в понедельник</div>
+        </div>
+        <span class="wheel w1"></span><span class="wheel w2"></span>
+      </div>
+      <div class="flash" id="flash"></div>
+    </div>
+    <div class="wrap gauge-line">
+      <div class="speed" aria-hidden="true"><b id="kmh">0</b><span>км/ч<br>скорость решения</span></div>
+      <div class="bill" id="bill">
+        <div class="k">Цена ошибки в этом примере</div>
+        <div class="v">1 840 000 ₽</div>
+        <div class="t">и 14 месяцев, чтобы вернуться туда, откуда стартовал. В краш-тесте ты увидишь эту цифру до удара, а не после.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Почему сейчас ============ -->
+<section class="why night" id="why">
+  <div class="wrap">
+    <h2 class="rise">Декабрь. Время решать, с чем входить в 2027</h2>
+    <p class="lead rise">Сокращённые недели, задержки зарплат, закрытые проекты. Самые дорогие решения люди принимают именно сейчас: на нервах после новости, после чужого рилса, после ссоры с начальником.</p>
+    <div class="stats">
+      <div class="stat rise"><b>23%</b><p>компаний этой осенью собирались сокращать людей. Годом раньше таких было около 12%.</p><a href="https://t-j.ru/cutting-staff-2026/" target="_blank" rel="noopener">Т—Ж, осень 2026</a></div>
+      <div class="stat rise"><b>2027</b><p>Глава РСПП предупредил: компании могут перейти от сокращённой рабочей недели к увольнениям.</p><a href="https://novayagazeta.eu/amp/articles/2026/11/14/glava-rspp-predupredil-chto-v-2027-godu-kompanii-mogut-pereiti-ot-sokrashchennoi-rabochei-nedeli-k-uvolneniiam-news" target="_blank" rel="noopener">Новая газета Европа, 14.11.2026</a></div>
+      <div class="stat rise"><b>67%</b><p>опрошенных hh.ru собирались в 2026 году работать по новой специальности.</p><a href="https://vc.ru/hr/2711893-67-procent-rossiyan-hotyat-smenit-professiyu" target="_blank" rel="noopener">hh.ru через vc.ru</a></div>
+    </div>
+    <p class="punch rise">Решение уйти, остаться, вложить или уехать всё равно придётся принять. Вопрос только, узнаешь ты цену ошибки <em>до</em> или <em>после</em>.</p>
+  </div>
+</section>
+
+<!-- ============ Что внутри ============ -->
+<section class="inside" id="inside">
+  <div class="wrap">
+    <h2 class="rise">На выходе — протокол испытания, а не мотивация</h2>
+    <div class="inside-grid">
+      <ol class="parts">
+        <li class="rise"><b>Вердикт</b><span>Зелёный, жёлтый или красный и сила удара от 0 до 100. Прыгать, проверять или пока не трогать.</span></li>
+        <li class="rise"><b>Цена ошибки в рублях</b><span>Сколько потеряешь, если не выйдет: ставка плюс доход, который недополучишь, пока будешь откатываться.</span></li>
+        <li class="rise"><b>Запас хода</b><span>На сколько месяцев хватит денег после старта и какая подушка нужна, чтобы удар не убил.</span></li>
+        <li class="rise"><b>Три зоны деформации</b><span>Где решение сломается первым и что усилить до прыжка. К каждой зоне — история Андрея, где он сам через это прошёл.</span></li>
+        <li class="rise"><b>Тест-заезд на 14 дней</b><span>План по дням под твой тип решения: проверить малыми деньгами и не сжечь мосты. С критериями «едешь» и «тормозишь».</span></li>
+        <li class="rise"><b>Пять вопросов</b><span>Что спросить у людей, которые уже прошли этот путь. Один честный разговор стоит сотни роликов.</span></li>
+        <li class="rise"><b>Точка невозврата</b><span>Дата, когда ты принимаешь решение, и договор с собой. Сохраняется в PDF.</span></li>
+      </ol>
+      <div class="sheet-wrap rise">
+        <div class="sheet-tilt" id="tilt">
+          <div id="sample"></div>
+          <span class="glare" aria-hidden="true"></span>
+        </div>
+        <p class="sample-note"><span class="mark"></span>Так выглядит начало протокола. Цифры здесь из примера, у тебя будут твои.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Экспресс-тест ============ -->
+<section class="express" id="express">
+  <div class="wrap ex-grid">
+    <div>
+      <h2 class="rise">Экспресс-тест за минуту</h2>
+      <p class="lead rise">Пять вопросов, сила удара и одна зона деформации. Бесплатно и без регистрации. Полный протокол считает деньги, даёт три зоны и план на 14 дней.</p>
+    </div>
+    <div class="ex-card" id="ex" aria-live="polite">
+      <div class="ex-bar" id="exBar"></div>
+      <div class="ex-body" id="exBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Кто проводит тест ============ -->
+<section class="who" id="who">
+  <div class="wrap">
+    <h2 class="rise">Я прошёл через ад и&nbsp;рай. Каждая строка ниже — удар, после которого можно было не встать</h2>
+    <div class="who-grid">
+      <div class="who-photo rise">
+        <figure>
+          <img src="img/andrey-about.jpg" alt="Андрей Хард улыбается" width="720" height="720" loading="lazy">
+          <figcaption><b>Андрей Хард</b><span>12+ лет в бизнесе. Строил отделы продаж, провёл сотни переговоров, создал ИИ-компанию без инвестиций. Сейчас во Вьетнаме, в Дананге.</span></figcaption>
+        </figure>
+      </div>
+      <ol class="log">
+        <li class="rise"><div class="n">Удар<i>01</i></div><div><h3>Армия, куда все боялись попасть</h3><p>Там учусь решать нерешаемое и находить выход из безвыходного.</p><div class="ok"><span class="mark"></span>Характер в титан</div></div></li>
+        <li class="rise"><div class="n">Удар<i>02</i></div><div><h3>В 20 лет открываю свой первый бизнес</h3><p>С первого месяца выходим в плюс. Однокурсники ещё доучиваются на поваров, а я уже беру их на работу. Помогаю знакомым открывать такие же рестораны и бары.</p><div class="ok"><span class="mark"></span>Работает до сих пор, Белгород</div></div></li>
+        <li class="rise"><div class="n">Удар<i>03</i></div><div><h3>Травма и жёсточайшая депрессия</h3><p>Выгляжу как зомби, на бизнес сил нет. Иду в найм.</p><div class="ok"><span class="mark"></span>Моментальный карьерный рост и х6 прибыли за год</div></div></li>
+        <li class="rise"><div class="n">Удар<i>04</i></div><div><h3>Врываюсь партнёром в сеть строительных магазинов</h3><p>Один магазин настолько большой, что я паркую туда свой BMW перед вылетом на конференцию.</p><div class="ok"><span class="mark"></span>Сеть больше 1 000 000 $</div></div></li>
+        <li class="rise"><div class="n">Удар<i>05</i></div><div><h3>Разбиваюсь на мотоцикле</h3><p>Теряю память и сознание, куча переломов.</p><div class="ok"><span class="mark"></span>Бизнес работал как часы без меня, потому что был так настроен</div></div></li>
+        <li class="rise"><div class="n">Удар<i>06</i></div><div><h3>Эффект бога и стройка</h3><p>Строю два своих дома и три под заказ. В РФ отменяют ипотеку, проекты замораживаются. Продаю квартиру и все мотоциклы, теряю много денег.</p><div class="ok"><span class="mark"></span>Ушёл в минус и вылез. Отсюда первая зона в каждом протоколе: запас хода</div></div></li>
+        <li class="rise"><div class="n">Удар<i>07</i></div><div><h3>ИИ-компания без инвестиций</h3><p>Полтора года разработки, Сколково. Голосовой менеджер по продажам: 37% конверсии на холодном звонке, 95% людей не понимали, что говорят с ИИ. 25 сотрудников, заказчики с оборотом 170+ млрд. Рынок в РФ стал слишком сложным — сократились и ушли за рубеж.</p><div class="ok"><span class="mark"></span>Теперь собираю этот опыт в инструменты для тех, кому цена ошибки слишком высока</div></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Для кого ============ -->
+<section class="fit">
+  <div class="wrap">
+    <h2 class="rise">Кому зайдёт</h2>
+    <div class="fit-grid">
+      <div class="fit-col rise">
+        <h3>Проходи, если</h3>
+        <ul>
+          <li>Думаешь уволиться и боишься остаться без денег</li>
+          <li>Хочешь открыть точку или проект на свою подушку</li>
+          <li>Собираешься вложить крупную сумму: стройка, покупка, доля</li>
+          <li>Зовут в партнёрство и непонятно, стоит ли</li>
+          <li>Планируешь переезд и не понимаешь, на что жить первые полгода</li>
+          <li>Крутишь решение в голове больше года и устал от этого</li>
+        </ul>
+      </div>
+      <div class="fit-col no rise">
+        <h3>Не трать время, если</h3>
+        <ul>
+          <li>Ищешь, кто скажет «давай, у тебя всё получится»</li>
+          <li>Нужна терапия: здесь цифры и план, а не разговор о чувствах</li>
+          <li>Решение уже принято и деньги ушли: тут поможет только разбор</li>
+          <li>Хочешь курс на месяц: это 25 минут и две недели проверки</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Цена ============ -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <h2 class="rise">Дешевле, чем любая ошибка, которую он ловит</h2>
+    <div class="price-grid">
+      <div class="ticket rise">
+        <div class="tape" aria-hidden="true"></div>
+        <div class="in">
+          <h3>Полный краш-тест</h3>
+          <div class="cost"><b data-cfg="price">990 ₽</b><s data-cfg="priceLater">1 490 ₽</s><span>Цена до <span data-cfg="priceUntil">12 декабря</span>, потом <span data-cfg="priceLater">1 490 ₽</span></span></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0F" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6"/></svg>Тест на 25 минут: 22 вопроса в пяти блоках</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0F" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6"/></svg>Протокол: вердикт, цена ошибки, запас хода, три зоны деформации</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0F" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6"/></svg>Тест-заезд на 14 дней под твой тип решения</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0F" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6"/></svg>PDF на память и договор с собой</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#0E0E0F" stroke-width="2.5" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6"/></svg>Доступ навсегда: проверяй следующие решения</li>
+          </ul>
+          <a class="btn btn-main js-buy" href="#">Пройти краш-тест <span class="price" data-cfg="price">990 ₽</span></a>
+        </div>
+      </div>
+      <div class="consult night rise">
+        <span class="mark"></span>
+        <h3>Разбор с Андреем, 90 минут</h3>
+        <b class="big">15 000 ₽</b>
+        <p>Только для тех, у кого на руках протокол. Андрей заранее видит твои цифры и зоны, поэтому за полтора часа вы разбираете решение, а не знакомитесь. На выходе — письменный план действий.</p>
+        <div><div class="seats" id="seats" aria-label="Места в декабре"></div><p style="margin-top:10px" id="seatsTxt">5 мест в декабре</p></div>
+        <a class="btn btn-ghost js-consult" href="#">Записаться на разбор</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq">
+  <div class="wrap">
+    <h2 class="rise">Вопросы</h2>
+    <div class="faq-list">
+      <details><summary>Это нейросеть отвечает?</summary><p>Нет. Это методика Андрея: вопросы, расчёт и правила, по которым он сам проверяет решения. Всё считается прямо на твоём телефоне, ответы и цифры никуда не отправляются.</p></details>
+      <details><summary>Что будет после оплаты?</summary><p>Придёт ссылка на полный тест. Проходишь в любое время, протокол сохраняешь в PDF. Возвращаться к тесту можно сколько угодно раз, например для следующего решения.</p></details>
+      <details><summary>А если вердикт красный?</summary><p>Красный — это не «никогда», это «не на этой скорости». В протоколе написано, какие зоны усилить: сколько добрать подушки, с кем поговорить, что проверить. Через две-три недели проходишь тест заново и смотришь, сдвинулась ли стрелка.</p></details>
+      <details><summary>Мне это заменит консультацию?</summary><p>Для большинства решений — да, протокола хватает. Если ставки большие и хочется второго мнения, есть разбор с Андреем: он работает уже по твоему протоколу.</p></details>
+      <details><summary>Это финансовый совет?</summary><p>Нет. Это расчёт рисков и план проверки на основе твоих же цифр. Решение всегда принимаешь ты.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Финал ============ -->
+<section class="final night">
+  <div class="wrap">
+    <h2 class="rise">Узнай цену ошибки до&nbsp;того, как заплатишь её</h2>
+    <div class="ctas rise">
+      <a class="btn btn-main js-buy" href="#">Пройти краш-тест <span class="price" data-cfg="price">990 ₽</span></a>
+      <a class="btn btn-ghost" href="#express">Сначала экспресс-тест</a>
+    </div>
+    <div class="foot">
+      <span>Андрей Хард, 2026</span>
+      <span><a href="https://www.instagram.com/hard_andrei/" target="_blank" rel="noopener">Instagram @hard_andrei</a> &nbsp; <a href="https://t.me/andry_hard" target="_blank" rel="noopener">Telegram</a></span>
+      <span>Не является финансовой, юридической или психологической консультацией</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/method.js"></script>
+<script src="js/render.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

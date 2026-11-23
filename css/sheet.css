@@ -1,0 +1,93 @@
+/* Лист протокола: на экране, в превью на лендинге и в печати */
+.sheet { background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: var(--r); padding: 28px; font-size: 16px; line-height: 1.45; }
+.sheet .mono { font-size: 13px; color: var(--ink2); }
+.sh-head { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start; padding-bottom: 18px; border-bottom: 2px solid var(--ink); }
+.sh-brand { display: flex; gap: 12px; align-items: center; }
+.sh-brand .mark { --s: 36px; }
+.sh-brand b { display: block; font: 400 18px/1.1 var(--display); }
+.sh-obj { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.sh-obj b { font: 400 20px/1.15 var(--display); max-width: 26ch; }
+.sh-obj span:last-child { color: var(--ink2); font-size: 14px; }
+
+.sh-verdict { display: grid; grid-template-columns: 260px 1fr; gap: 24px; align-items: center; padding: 22px 0; border-bottom: 2px solid var(--ink); }
+.sh-dial { position: relative; }
+.sh-dial .dial { max-width: 260px; }
+.sh-force { text-align: center; margin-top: 4px; }
+.sh-force b { font: 400 44px/1 var(--display); display: block; }
+.sh-force span { font-size: 13px; color: var(--ink2); }
+.sh-vtext h3 { font-size: 30px; margin: 12px 0 8px; }
+.sh-vtext p { margin: 0; color: var(--ink2); }
+.v-red .sh-vtext h3 { color: var(--red); }
+.v-green .sh-vtext h3 { color: var(--green); }
+
+.sh-nums { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 2px solid var(--ink); }
+.sh-nums > div { padding: 18px 16px 18px 0; display: flex; flex-direction: column; gap: 6px; }
+.sh-nums > div + div { padding-left: 16px; border-left: 2px solid var(--line); }
+.sh-nums b { font: 400 26px/1.05 var(--display); font-variant-numeric: tabular-nums; }
+.sh-nums b.red { color: var(--red); }
+.sh-nums small { color: var(--ink2); font-size: 13px; line-height: 1.35; }
+
+.sh-block { padding: 22px 0; border-bottom: 2px solid var(--ink); }
+.sh-block h3 { font-size: 24px; }
+.sh-lead { color: var(--ink2); margin: 6px 0 16px; }
+.zones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.zone { border: 2px solid var(--ink); border-radius: var(--r); padding: 14px; display: flex; flex-direction: column; gap: 8px; background: var(--lab); }
+.zone h4 { margin: 0; font: 400 18px/1.15 var(--display); }
+.zone p { margin: 0; font-size: 15px; }
+.zone blockquote { margin: 0; padding: 8px 0 8px 12px; border-left: 4px solid var(--yellow); font-size: 14.5px; color: var(--ink2); }
+.zone blockquote .mono { color: var(--ink); font-weight: 700; }
+.zone .fix { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--line); }
+
+.days { width: 100%; border-collapse: collapse; }
+.days th { text-align: left; vertical-align: top; width: 110px; padding: 10px 12px 10px 0; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.days td { padding: 10px 0; }
+.days tr + tr th, .days tr + tr td { border-top: 1px solid var(--line); }
+.crit { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.crit > div { border-radius: var(--r); padding: 14px; border: 2px solid var(--ink); }
+.crit .go { background: #E3F3E7; }
+.crit .stop { background: #FBE3DE; }
+.crit p { margin: 6px 0 0; font-weight: 600; }
+.crit .mono { color: var(--ink); }
+.ask { margin: 12px 0 0; padding-left: 22px; display: grid; gap: 6px; }
+.ask li::marker { font-family: var(--mono); font-weight: 700; }
+
+.sh-point { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 24px; align-items: start; }
+.sh-point b { display: block; font: 400 30px/1.05 var(--display); margin: 6px 0 10px; }
+.sh-point p { color: var(--ink2); margin: 0; }
+.contract { border: 2px dashed var(--ink); border-radius: var(--r); padding: 16px; background: #FFFBE6; }
+.contract p { color: var(--ink); margin: 0 0 8px; }
+.sign { display: flex; gap: 24px; margin-top: 18px; }
+.sign span { flex: 1; border-top: 2px solid var(--ink); padding-top: 4px; font-size: 13px; color: var(--ink2); }
+.sh-foot { display: flex; justify-content: space-between; gap: 16px; padding-top: 14px; color: var(--ink2); font-size: 13px; }
+
+/* Компактное превью на лендинге */
+.sheet.compact { font-size: 14px; padding: 22px; }
+.sheet.compact .sh-block:nth-of-type(n+5) { display: none; }
+.sheet.compact .zones { grid-template-columns: 1fr; }
+.sheet.compact .zone:nth-child(n+2) { display: none; }
+.sheet.compact .sh-verdict { grid-template-columns: 180px 1fr; gap: 16px; }
+.sheet.compact .sh-vtext h3 { font-size: 24px; }
+.sheet.compact .sh-nums b { font-size: 20px; }
+.sheet.compact .days tr:nth-child(n+4) { display: none; }
+
+@media (max-width: 760px) {
+  .sheet { padding: 18px; }
+  .sh-head { grid-template-columns: 1fr; }
+  .sh-obj { text-align: left; align-items: flex-start; }
+  .sh-verdict, .sheet.compact .sh-verdict { grid-template-columns: 1fr; }
+  .sh-dial .dial { margin: 0 auto; }
+  .sh-nums { grid-template-columns: 1fr; }
+  .sh-nums > div + div { padding-left: 0; border-left: 0; border-top: 2px solid var(--line); }
+  .zones, .crit, .sh-point { grid-template-columns: 1fr; }
+  .days th { width: 86px; }
+}
+
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body { background: #fff !important; }
+  .no-print { display: none !important; }
+  .sheet { border: 0; padding: 0; font-size: 11.5pt; }
+  .sh-block, .zone, .crit > div, .contract, .sh-verdict { break-inside: avoid; }
+  .zones { grid-template-columns: 1fr 1fr 1fr; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
