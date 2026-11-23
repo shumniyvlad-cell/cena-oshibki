@@ -5,7 +5,7 @@
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const T = KT.T, esc = KT.esc;
-  const KEY = 'kt-v1';
+  const KEY = 'co-v1';
 
   let state = load() || { step: -1, a: {} };
   function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
@@ -43,13 +43,13 @@
     const started = Object.keys(state.a).length > 0;
     app.innerHTML = `<section class="intro">
       <span class="mark" style="--s:48px"></span>
-      <h1 style="margin-top:20px">${T('Краш-тест твоего решения')}</h1>
-      <p class="lead">${T('25 минут, пять блоков, 22 вопроса. Отвечай так, как есть, а не как хотелось бы: от честности цифр зависит, насколько точно протокол покажет удар.')}</p>
+      <h1 style="margin-top:20px">${T('Цена ошибки твоего решения')}</h1>
+      <p class="lead">${T('25 минут, пять блоков, 22 вопроса. Отвечай так, как есть, а не как хотелось бы: от честности цифр зависит, насколько точно получится цена ошибки.')}</p>
       <ul>
         ${B.map((b, i) => `<li><span class="mono">0${i + 1}</span><div><b>${T(b.title)}</b><span>${T(b.lead)}</span></div></li>`).join('')}
       </ul>
       <div class="row">
-        <button class="btn btn-main" type="button" id="start">${started ? 'Продолжить с места остановки' : 'Начать испытание'}</button>
+        <button class="btn btn-main" type="button" id="start">${started ? 'Продолжить с места остановки' : 'Начать расчёт'}</button>
         ${started ? '<button class="btn btn-ghost" type="button" id="reset">Начать заново</button>' : ''}
       </div>
       <p class="privacy">${shield}${T('Ответы и цифры остаются на этом устройстве. Мы их не видим и никуда не отправляем.')}</p>
@@ -101,7 +101,7 @@
       <form id="f" novalidate>${b.q.map(qHtml).join('')}
         <div class="nav">
           <button type="button" class="btn btn-ghost" id="back">Назад</button>
-          <button type="submit" class="btn btn-main">${i === B.length - 1 ? 'Запустить испытание' : 'Дальше'}</button>
+          <button type="submit" class="btn btn-main">${i === B.length - 1 ? 'Посчитать' : 'Дальше'}</button>
         </div>
       </form>
     </section>`;
@@ -163,22 +163,22 @@
   function showErr(id, msg) { const box = $(`[data-q="${id}"]`); box.classList.add('has-err'); const e = $(`#e-${id}`); e.hidden = false; $('span', e).textContent = msg; const inp = $('input', box); if (inp) inp.setAttribute('aria-invalid', 'true'); }
   function clearErr(id) { const box = $(`[data-q="${id}"]`); if (!box) return; box.classList.remove('has-err'); const e = $(`#e-${id}`); if (e) e.hidden = true; const inp = $('input', box); if (inp) inp.removeAttribute('aria-invalid'); }
 
-  /* ---------- Испытание идёт ---------- */
+  /* ---------- Считаем ---------- */
   function run() {
     drawProg(B.length);
     history.pushState({ step: B.length }, '');
     state.step = B.length; save();
-    app.innerHTML = `<section class="running" role="status"><div>${KT.dial(50)}<h2>${T('Испытание идёт')}</h2><p>${T('Считаем удар, запас хода и зоны деформации')}</p></div></section>`;
+    app.innerHTML = `<section class="running" role="status"><div>${KT.dial(50)}<h2>${T('Считаем')}</h2><p>${T('Цену ошибки, на сколько хватит денег и слабые места')}</p></div></section>`;
     window.scrollTo(0, 0);
     setTimeout(result, motion ? 1600 : 200);
   }
 
-  /* ---------- Протокол ---------- */
+  /* ---------- Расчёт ---------- */
   function result() {
     drawProg(B.length);
     const missing = B.findIndex((b) => b.q.some((q) => !filled(q)));
     if (missing !== -1) {
-      app.innerHTML = `<section class="intro"><h2>${T('Не хватает ответов')}</h2><p class="lead">${T('Протокол собирается из всех пяти блоков. Вернись к блоку ' + (missing + 1) + ' и допиши ответы.')}</p><button class="btn btn-main" type="button" id="fix">Вернуться к блоку ${missing + 1}</button></section>`;
+      app.innerHTML = `<section class="intro"><h2>${T('Не хватает ответов')}</h2><p class="lead">${T('Расчёт собирается из всех пяти блоков. Вернись к блоку ' + (missing + 1) + ' и допиши ответы.')}</p><button class="btn btn-main" type="button" id="fix">Вернуться к блоку ${missing + 1}</button></section>`;
       $('#fix').addEventListener('click', () => go(missing));
       return;
     }
@@ -187,7 +187,7 @@
       app.innerHTML = `<section class="intro"><h2>${T('Что-то сломалось при расчёте')}</h2><p class="lead">${T('Ответы сохранены. Попробуй ещё раз.')}</p><button class="btn btn-main" type="button" id="retry">Повторить</button></section>`;
       $('#retry').addEventListener('click', result); return;
     }
-    if (!state.no) { state.no = 'КТ-' + String(Date.now()).slice(-5); save(); }
+    if (!state.no) { state.no = 'ЦО-' + String(Date.now()).slice(-5); save(); }
     app.innerHTML = `<div class="res-actions no-print">
         <button class="btn btn-main" type="button" id="pdf">Сохранить PDF</button>
         <button class="btn btn-ghost" type="button" id="edit">Поправить ответы</button>
@@ -195,10 +195,10 @@
       </div>
       ${KT.sheet(r, { no: state.no, dialId: 'resDial' })}
       <aside class="upsell night no-print">
-        <div><h3>${T('Ставки высокие и нужен второй взгляд?')}</h3><p>${T('Разбор с Андреем, 90 минут. Он заранее смотрит твой протокол, поэтому время уходит на решение, а не на знакомство.')} <b>15&nbsp;000&nbsp;₽</b></p></div>
+        <div><h3>${T('Ставки высокие и нужен второй взгляд?')}</h3><p>${T('Разбор с Андреем, 90 минут. Он заранее смотрит твой расчёт, поэтому время уходит на решение, а не на знакомство.')} <b>15&nbsp;000&nbsp;₽</b></p></div>
         <a class="btn btn-main" href="${esc(C.consultUrl)}" target="_blank" rel="noopener">Записаться</a>
       </aside>
-      <p class="restore no-print">${T('Протокол сохранён на этом устройстве: вернёшься по той же ссылке — он будет здесь.')}</p>`;
+      <p class="restore no-print">${T('Расчёт сохранён на этом устройстве: вернёшься по той же ссылке — он будет здесь.')}</p>`;
     const d = $('#resDial');
     if (d && motion) { const deg = d.style.getPropertyValue('--deg'); d.style.setProperty('--deg', '-90deg'); requestAnimationFrame(() => requestAnimationFrame(() => d.style.setProperty('--deg', deg))); }
     $('#pdf').addEventListener('click', () => window.print());

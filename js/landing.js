@@ -35,82 +35,53 @@
     new IntersectionObserver(([e]) => top.classList.toggle('hidden', e.isIntersecting)).observe(heroCta);
   }
 
-  /* ---------- Разгон и удар ---------- */
-  const crash = $('#crash'), stage = $('#stage'), car = $('#car'), kmh = $('#kmh'), bill = $('#bill'), flash = $('#flash'), shardsBox = $('#shards'), label = $('#carLabel');
-  const labels = ['Уволюсь в понедельник', 'Открою кофейню на подушку', 'Вложу всё в стройку', 'Уеду в Дананг', 'Войду в долю к другу'];
-  shardsBox.innerHTML = Array.from({ length: 14 }, (_, i) => {
-    const a = (-150 + i * 22) * Math.PI / 180, d = 90 + (i * 37) % 120;
-    return `<i style="--dx:${Math.round(Math.cos(a) * d * -1)}px;--dy:${Math.round(Math.sin(a) * d)}px;--rot:${(i * 67) % 360}deg"></i>`;
-  }).join('');
-
-  const crumple = 'polygon(0 0, 78% 0, 86% 12%, 80% 26%, 92% 38%, 84% 52%, 96% 64%, 86% 78%, 94% 90%, 84% 100%, 0 100%)';
+  /* ---------- Счёт печатается по прокрутке ---------- */
+  const scene = $('#scene'), stage = $('#stage'), totalEl = $('#total');
+  const lines = $$('.r-line', scene), TOTAL = 1110000;
+  const fmt = (n) => Math.round(n).toLocaleString('ru-RU').replace(/,/g, ' ');
+  const clamp = (x) => Math.min(1, Math.max(0, x));
   function setFinal() {
-    crash.classList.add('static');
-    const trackW = stage.querySelector('.track').clientWidth, wallX = stage.querySelector('.wall').offsetLeft;
-    car.style.setProperty('--x', Math.max(0, wallX - car.offsetWidth * 0.82) + 'px');
-    car.style.setProperty('--crush', '0.82');
-    car.querySelector('.body').style.setProperty('--clip', crumple);
-    stage.style.setProperty('--bill', 1);
-    kmh.textContent = '0';
-    void trackW;
+    scene.classList.add('static');
+    ['--feed', '--stamp', '--after'].forEach((k) => stage.style.setProperty(k, 1));
+    lines.forEach((l) => l.style.setProperty('--o', 1));
+    totalEl.textContent = fmt(TOTAL);
   }
-
-  let lastLabel = -1, shook = false;
-  function crashFrame() {
-    const r = crash.getBoundingClientRect();
-    const total = crash.offsetHeight - innerHeight;
-    const p = Math.min(1, Math.max(0, -r.top / total));
-    const wall = stage.querySelector('.wall');
-    const wallX = wall.offsetLeft;
-    const carW = car.offsetWidth;
-    const startX = -carW * 0.4;
-    const hitX = wallX - carW;
-    const IMPACT = 0.62;
-    let x, crush = 1, fl = 0, bl = 0, blur = 0, shard = 0, fly = 0, speed;
-    if (p < IMPACT) {
-      const t = p / IMPACT; const e = t * t; // разгон
-      x = startX + (hitX - startX) * e;
-      speed = Math.round(e * 140);
-      blur = Math.min(1, t * 1.4) * 0.6;
-      const li = Math.min(labels.length - 1, Math.floor(t * labels.length));
-      if (li !== lastLabel) { label.textContent = KT.typo(labels[li]); lastLabel = li; }
-      car.querySelector('.body').style.setProperty('--clip', 'polygon(0 0, 100% 0, 100% 100%, 0 100%)');
-      shook = false;
+  let lastTotal = -1;
+  const narrow = matchMedia('(max-width: 980px)');
+  const receipt = $('.receipt', scene);
+  function sceneFrame() {
+    let p;
+    if (narrow.matches) {
+      // на телефоне без закрепления: счёт печатается, пока проезжает через экран
+      scene.classList.add('static');
+      const rr = receipt.getBoundingClientRect();
+      p = 0.12 + 0.8 * clamp((innerHeight * 0.85 - rr.top) / (rr.height * 0.95));
+      stage.style.setProperty('--feed', 1);
     } else {
-      const t = Math.min(1, (p - IMPACT) / 0.12);
-      crush = 1 - 0.18 * Math.min(1, t * 2);
-      x = hitX;
-      speed = Math.round(140 * Math.max(0, 1 - t * 3));
-      fl = Math.max(0, 0.85 - t * 2.2);
-      shard = t < 1 ? 1 - t * 0.6 : 0.4; fly = Math.min(1, t * 1.6);
-      bl = Math.min(1, Math.max(0, (p - IMPACT - 0.08) / 0.12));
-      car.querySelector('.body').style.setProperty('--clip', crumple);
-      if (!shook && t > 0 && t < 0.5) { shook = true; stage.animate([{ transform: 'translate(0,0)' }, { transform: 'translate(-10px,6px)' }, { transform: 'translate(8px,-6px)' }, { transform: 'translate(-5px,3px)' }, { transform: 'translate(0,0)' }], { duration: 320, easing: 'ease-out' }); }
+      scene.classList.remove('static');
+      const r = scene.getBoundingClientRect();
+      p = clamp(-r.top / (scene.offsetHeight - innerHeight));
+      stage.style.setProperty('--feed', (1 - Math.pow(1 - clamp(p / 0.5), 2)).toFixed(4));
     }
-    car.style.setProperty('--x', x + 'px');
-    car.style.setProperty('--crush', crush);
-    car.style.setProperty('--blur', blur);
-    stage.style.setProperty('--flash', fl);
-    stage.style.setProperty('--bill', bl);
-    shardsBox.style.setProperty('--shard', shard);
-    shardsBox.style.setProperty('--fly', fly);
-    kmh.textContent = speed;
+    lines.forEach((l, i) => l.style.setProperty('--o', clamp((p - 0.12 - i * 0.07) / 0.08).toFixed(3)));
+    const t = clamp((p - 0.42) / 0.22);
+    const val = Math.round(TOTAL * (1 - Math.pow(1 - t, 3)) / 1000) * 1000;
+    if (val !== lastTotal) { totalEl.textContent = fmt(val); lastTotal = val; }
+    stage.style.setProperty('--stamp', clamp((p - 0.7) / 0.06).toFixed(3));
+    stage.style.setProperty('--after', clamp((p - 0.78) / 0.1).toFixed(3));
   }
   if (motion) {
     let ticking = false;
-    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { crashFrame(); ticking = false; }); } };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { sceneFrame(); ticking = false; }); } };
     addEventListener('scroll', onScroll, { passive: true });
     addEventListener('resize', onScroll);
-    crashFrame();
-  } else {
-    setFinal();
-    addEventListener('resize', setFinal);
-  }
+    sceneFrame();
+  } else setFinal();
 
-  /* ---------- Пример протокола ---------- */
+  /* ---------- Пример расчёта ---------- */
   const sample = KT.compute({ type: 'quit', what: 'Ухожу из банка и открываю кофейню у дома', think: 'year', push: 'circ', spend: 120000, cushion: 400000, stake: 300000, income: 150000, income6: 60000,
     back: 'worse', back_time: 9, deps: 'some', burn: ['rel'], talked: 0, proof: 'no', small: 'part', before: 'no', dir: 'from', event: 'yes', regret: 'pain', sleep: 'fear' });
-  $('#sample').innerHTML = KT.sheet(sample, { compact: true, no: 'КТ-00417' });
+  $('#sample').innerHTML = KT.sheet(sample, { compact: true, no: 'ЦО-00417' });
 
   const tilt = $('#tilt');
   if (motion && matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -150,16 +121,16 @@
     drawBar(Q.length);
     const r = KT.express(ans); const v = KT.VERDICT[r.verdict]; const z = KT.ZONES[r.zone];
     const rr = { answers: { push: '' }, runway: Number(ans.rw), spend: 100000, safeCushion: 0 };
-    body.innerHTML = `<div class="ex-step mono">Результат экспресс-теста</div>
+    body.innerHTML = `<div class="ex-step mono">Результат экспресс-расчёта</div>
       ${KT.dial(r.force, 'exDial').replace('style="--deg', 'style="--deg-x')}
-      <div class="res-force"><b>${r.force}</b><div class="mono">сила удара из 100</div><p style="margin-top:12px"><span class="chip ${r.verdict}">${v.name}: ${KT.T(v.head)}</span></p></div>
-      <div class="zone-teaser"><span class="mono">Главная зона деформации</span><h4>${KT.T(z.title)}</h4><p style="margin:0">${KT.T(r.zone === 'runway' ? 'Денег после старта хватит ненадолго. Новое почти никогда не выходит на доход раньше, чем через полгода.' : z.why(rr))}</p><div class="say">${KT.T(z.andrey)}</div></div>
+      <div class="res-force"><b>${r.force}</b><div class="mono">риск из 100</div><p style="margin-top:12px"><span class="chip ${r.verdict}">${v.name}: ${KT.T(v.head.charAt(0).toLowerCase() + v.head.slice(1))}</span></p></div>
+      <div class="zone-teaser"><span class="mono">Главное слабое место</span><h4>${KT.T(z.title)}</h4><p style="margin:0">${KT.T(r.zone === 'runway' ? 'Денег после старта хватит ненадолго. Новое почти никогда не выходит на доход раньше, чем через полгода.' : z.why(rr))}</p><div class="say">${KT.T(z.andrey)}</div></div>
       <div class="locked">
-        <div>${lock}Цена ошибки в рублях и запас хода в месяцах</div>
-        <div>${lock}Ещё две зоны деформации и что с ними делать</div>
-        <div>${lock}Тест-заезд на 14 дней под твой тип решения</div>
+        <div>${lock}Цена ошибки в рублях и на сколько хватит денег</div>
+        <div>${lock}Ещё два слабых места и что с ними делать</div>
+        <div>${lock}Проверка за 14 дней под твой тип решения</div>
       </div>
-      <div class="ex-nav" style="flex-wrap:wrap;gap:12px"><a class="btn btn-main" href="${C.buyUrl}" target="_blank" rel="noopener">Полный протокол <span class="price">${C.price}</span></a><button class="linkbtn" type="button" id="exAgain">Пройти заново</button></div>`;
+      <div class="ex-nav" style="flex-wrap:wrap;gap:12px"><a class="btn btn-main" href="${C.buyUrl}" target="_blank" rel="noopener">Полный расчёт <span class="price">${C.price}</span></a><button class="linkbtn" type="button" id="exAgain">Пройти заново</button></div>`;
     const dialEl = $('#exDial'); const deg = -90 + r.force * 1.8;
     dialEl.style.setProperty('--deg', '-90deg');
     requestAnimationFrame(() => requestAnimationFrame(() => dialEl.style.setProperty('--deg', deg + 'deg')));
